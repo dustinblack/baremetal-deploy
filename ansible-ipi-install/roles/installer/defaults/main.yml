@@ -1,2 +1,4 @@
 ---
 # defaults file for installer
+increase_bootstrap_timeout: 0
+increase_install_timeout: 0
