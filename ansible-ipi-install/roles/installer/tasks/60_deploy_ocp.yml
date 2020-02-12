@@ -1,4 +1,10 @@
 ---
+- set_fact:
+    bootstrap_timeout: "{{ (increase_bootstrap_timeout + 1) }}"
+
+- set_fact:
+    install_timeout: "{{ (increase_install_timeout + 1) }}"
+
 - name: Add Kubeconfig to Ansible User .bashrc
   lineinfile:
     path: "{{ ansible_user_dir }}/.bashrc"
@@ -9,4 +15,23 @@
   shell: |
     /usr/local/bin/openshift-baremetal-install --dir {{ dir }} --log-level debug create cluster
   tags: install
+  async: 3600
+  poll: 0
+  ignore_errors: yes
+  register: installer_result
 
+- name: Wait for Bootstrap Complete
+  shell: |
+    /usr/local/bin/openshift-baremetal-install --dir {{ dir }} --log-level debug wait-for bootstrap-complete
+  register: wait_for_bootstrap_result
+  until: wait_for_bootstrap_result is succeeded
+  retries: "{{ bootstrap_timeout|int }}"
+  delay: 1
+
+- name: Wait for Install Complete
+  shell: |
+    /usr/local/bin/openshift-baremetal-install --dir {{ dir }} --log-level debug wait-for install-complete
+  register: wait_for_install_result
+  until: wait_for_install_result is succeeded
+  retries: "{{ install_timeout|int }}"
+  delay: 1
