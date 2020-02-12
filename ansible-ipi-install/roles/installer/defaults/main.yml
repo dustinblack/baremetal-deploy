@@ -9,3 +9,5 @@ install_config_appends_file: install-config-appends.yml
 registry_auth_file: registry-auths.json
 disconnected_registry_user: dummy
 disconnected_registry_password: dummy
+increase_bootstrap_timeout: 0
+increase_install_timeout: 0
