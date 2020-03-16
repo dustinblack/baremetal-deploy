@@ -9,6 +9,7 @@
   podman_image:
     name: "{{ badfish_pod_image }}"
     pull: yes
+    force: yes
 
 - name: Delete {{ pub_nic }} due to modify nmcli bug
   nmcli:
