@@ -11,6 +11,12 @@
     pull: yes
     force: yes
 
+- name: Clean network interfaces created by lab automation
+  shell: |
+    /root/clean-interfaces.sh --nuke
+  become: true
+  ignore_errors: true
+
 - name: Delete {{ pub_nic }} due to modify nmcli bug
   nmcli:
     conn_name: "{{ pub_nic }}"
