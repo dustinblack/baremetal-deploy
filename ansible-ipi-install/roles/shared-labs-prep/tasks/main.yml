@@ -100,11 +100,15 @@
   shell: |
     {{ badfish_cmd }}{{ item }} --clear-jobs
   with_items: "{{ master_fqdns }}"
+  tags:
+    - clearjobs
 
 - name: Clear worker nodes redfish job queue
   shell: |
     {{ badfish_cmd }}{{ item }} --clear-jobs
   with_items: "{{ worker_fqdns }}"
+  tags:
+    - clearjobs
 
 - name: Set master nodes to director boot order
   shell: |
@@ -114,6 +118,8 @@
   until: master_boot_order is succeeded
   retries: 3
   delay: 60
+  tags:
+    - bootorder
 
 - name: Set worker nodes to director boot order
   shell: |
@@ -123,6 +129,8 @@
   until: worker_boot_order is succeeded
   retries: 3
   delay: 60
+  tags:
+    - bootorder
 
 #TODO: Add wait for node reboot
 
