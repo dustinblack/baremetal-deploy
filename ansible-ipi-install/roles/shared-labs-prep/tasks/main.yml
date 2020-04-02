@@ -106,11 +106,19 @@
   shell: |
     {{ badfish_cmd }}{{ item }} --clear-jobs
   with_items: "{{ master_fqdns }}"
+  register: master_redfish
+  until: master_redfish is succeeded
+  retries: 3
+  delay: 30
 
 - name: Clear worker nodes redfish job queue
   shell: |
     {{ badfish_cmd }}{{ item }} --clear-jobs
   with_items: "{{ worker_fqdns }}"
+  register: worker_redfish
+  until: worker_redfish is succeeded
+  retries: 3
+  delay: 30
 
 - name: Set master nodes to director boot order
   shell: |
