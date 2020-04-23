@@ -10,7 +10,6 @@ interface=baremetal
 dhcp-range={{ extcidrnet | next_nth_usable(10) }},{{ extcidrnet | ipaddr('last_usable') }}
 dhcp-no-override
 dhcp-authoritative
-dhcp-lease-max=41
 {% for mac in master_bm_macs %}
 dhcp-host={{ mac }},{{ extcidrnet | next_nth_usable(loop.index0 + 10) }},master-{{ loop.index0 }}
 {% endfor %}
