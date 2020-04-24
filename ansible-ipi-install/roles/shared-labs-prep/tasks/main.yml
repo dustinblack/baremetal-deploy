@@ -197,21 +197,24 @@
     enabled: yes
   become: yes
 
-- name: Set fake root directory path
-  set_fact:
-    fake_root: "{{ playbook_dir }}/roles/installer/files/customize_filesystem/master/etc/sysconfig/network-scripts"
+- name: Create fake root
+  block:
+    - name: Set fake root directory path
+      set_fact:
+        fake_root: "{{ playbook_dir }}/roles/installer/files/customize_filesystem/master/etc/sysconfig/network-scripts"
 
-- name: Create fake root directory
-  file:
-    path: "{{ fake_root }}"
-    state: directory
-    mode: 0777
-  become: yes
+    - name: Create fake root directory
+      file:
+        path: "{{ fake_root }}"
+        state: directory
+        mode: 0777
+      become: yes
 
-- name: Create ifcfg files to disable NICs
-  template:
-    src: ocp4-lab.ifcfg-template.j2
-    dest: "{{ fake_root }}/ifcfg-{{ item }}"
-    mode: 0644
-  become: yes
-  with_items: "{{ disable_nics }}"
+    - name: Create ifcfg files to disable NICs
+      template:
+        src: ocp4-lab.ifcfg-template.j2
+        dest: "{{ fake_root }}/ifcfg-{{ item }}"
+        mode: 0644
+      become: yes
+      with_items: "{{ disable_nics }}"
+  delegate_to: localhost
