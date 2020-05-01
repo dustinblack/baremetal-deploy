@@ -18,7 +18,7 @@
 - name: Get Badfish master branch
   git:
     repo: https://github.com/redhat-performance/badfish.git
-    dest: "{{ badfish_tempdir }}"
+    dest: "{{ badfish_tempdir.path }}"
     force: yes
 
 - name: Clean network interfaces created by lab automation
