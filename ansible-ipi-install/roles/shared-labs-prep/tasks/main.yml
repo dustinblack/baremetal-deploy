@@ -122,7 +122,7 @@
 
 - name: Clear redfish job queues
   shell:
-    chdir: "{{ badfish_tempdir }}"
+    chdir: "{{ badfish_tempdir.path }}"
     cmd: |
       {{ badfish_cmd }}{{ item }} --clear-jobs --force
   with_items:
@@ -137,7 +137,7 @@
 
 - name: Set nodes to director boot order
   shell:
-    chdir: "{{ badfish_tempdir }}"
+    chdir: "{{ badfish_tempdir.path  }}"
     cmd: |
       {{ badfish_cmd }}{{ item }} -t director
   with_items:
